@@ -1,0 +1,119 @@
+def ur5e_dibujar():
+  textmsg("=== UR5e: inicio del programa ===")
+
+  # Guardar posición actual como HOME
+  q_home = get_actual_joint_positions()
+  textmsg("UR5e HOME guardado")
+
+  # === Ir al origen calibrado del papel: UR5e ===
+  textmsg("UR5e - yendo al origen calibrado")
+
+  x0 = 0.68387
+  y0 = -0.03000
+  z_mesa = 0.00221
+  rx = 2.48100
+  ry = -1.92700
+  rz = 0.00000
+
+  movel(p[x0, y0, z_mesa+0.05000, rx, ry, rz], a=0.05, v=0.05)
+  sleep(0.2)
+  movel(p[x0, y0, z_mesa+0.02000, rx, ry, rz], a=0.03, v=0.003)
+  sleep(0.2)
+  movel(p[x0, y0, z_mesa+0.05000, rx, ry, rz], a=0.08, v=0.1)
+
+  # === FASE 2: Dibujo - UR5e - 3 trazos ===
+
+  # --- Trazo 1 / 3 ---
+  textmsg("UR5e - Trazo 1 de 3")
+  movel(p[x0+0.00343, y0+0.04093, z_mesa+0.05000, rx, ry, rz], a=0.05, v=0.1)
+  movel(p[x0+0.00343, y0+0.04093, z_mesa+0.02000, rx, ry, rz], a=0.01, v=0.0015)
+  movel(p[x0+0.00300, y0+0.04136, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.00257, y0+0.04136, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.00686, y0+0.04007, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01114, y0+0.03750, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01371, y0+0.03493, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01543, y0+0.03193, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01629, y0+0.02893, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01629, y0+0.02507, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01414, y0+0.01993, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.00857, y0+0.01264, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.00729, y0+0.01264, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.00600, y0+0.01350, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.00300, y0+0.01436, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.00300, y0+0.01436, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.00343, y0+0.01393, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.00643, y0+0.01350, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.00771, y0+0.01264, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.00900, y0+0.01264, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.01414, y0+0.01950, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.01586, y0+0.02250, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.01671, y0+0.02550, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.01671, y0+0.02850, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.01543, y0+0.03279, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.01371, y0+0.03536, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.01029, y0+0.03836, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.00729, y0+0.04007, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.00386, y0+0.04093, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.00386, y0+0.04093, z_mesa+0.05000, rx, ry, rz], a=0.05, v=0.1)
+
+  # --- Trazo 2 / 3 ---
+  textmsg("UR5e - Trazo 2 de 3")
+  movel(p[x0+-0.02571, y0+0.02293, z_mesa+0.05000, rx, ry, rz], a=0.05, v=0.1)
+  movel(p[x0+-0.02571, y0+0.02293, z_mesa+0.02000, rx, ry, rz], a=0.01, v=0.0015)
+  movel(p[x0+-0.02614, y0+0.02336, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.02957, y0+0.02293, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.03429, y0+0.02079, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.03943, y0+0.01521, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.04114, y0+0.01179, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.04200, y0+0.00879, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.04200, y0+0.00236, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.03986, y0+-0.00321, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.03600, y0+-0.00707, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.03129, y0+-0.00921, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.02614, y0+-0.00921, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01671, y0+-0.00621, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01629, y0+-0.00579, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01629, y0+0.00107, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01543, y0+0.00407, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01371, y0+0.00750, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01114, y0+0.01007, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01114, y0+0.01093, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01543, y0+0.01693, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01971, y0+0.02121, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.02357, y0+0.02293, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.02529, y0+0.02293, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.02529, y0+0.02293, z_mesa+0.05000, rx, ry, rz], a=0.05, v=0.1)
+
+  # --- Trazo 3 / 3 ---
+  textmsg("UR5e - Trazo 3 de 3")
+  movel(p[x0+0.00257, y0+0.01136, z_mesa+0.05000, rx, ry, rz], a=0.05, v=0.1)
+  movel(p[x0+0.00257, y0+0.01136, z_mesa+0.02000, rx, ry, rz], a=0.01, v=0.0015)
+  movel(p[x0+0.00214, y0+0.01179, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.00171, y0+0.01179, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.00729, y0+0.00964, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01200, y0+0.00450, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01371, y0+-0.00064, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01329, y0+-0.00579, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.01114, y0+-0.01007, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.00643, y0+-0.01436, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+-0.00171, y0+-0.01607, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.00386, y0+-0.01564, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.00814, y0+-0.01350, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.01200, y0+-0.00921, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.01329, y0+-0.00664, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.01371, y0+-0.00364, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.01414, y0+-0.00321, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.01371, y0+0.00107, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.01157, y0+0.00579, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.00686, y0+0.01007, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.00300, y0+0.01136, z_mesa+0.02000, rx, ry, rz], a=0.008, v=0.5, r=0.0005)
+  movel(p[x0+0.00300, y0+0.01136, z_mesa+0.05000, rx, ry, rz], a=0.05, v=0.1)
+
+  textmsg("UR5e - Dibujo completado")
+  # === Volver a HOME ===
+  textmsg("UR5e - Volviendo a HOME")
+  movej(q_home, a=0.05, v=0.05)
+  textmsg("UR5e - En HOME. Programa completado")
+end
+
+ur5e_dibujar()

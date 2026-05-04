@@ -1,0 +1,48 @@
+# -*- coding: utf-8 -*-
+"""
+config.py
+=========
+Parámetros globales del sistema de dibujo colaborativo UR3e + UR5e.
+"""
+
+UR3E_IP   = "192.168.56.101"
+UR5E_IP   = "192.168.56.102"
+PORT      = 30002
+PORT_DASH = 29999
+
+# PC / XML-RPC
+PC_IP = "192.168.56.2"
+XMLRPC_PORT = 50080
+XMLRPC_URL = f"http://{PC_IP}:{XMLRPC_PORT}/RPC2"
+
+UR3E_TCP_ORIGEN = [-0.52777, -0.01601,  0.00821,  1.346,  2.839, 0.0]
+UR5E_TCP_ORIGEN = [ 0.68387, -0.03000,  0.00221,  2.481, -1.927, 0.0]
+
+UR3E_MAX_REACH = 0.44
+UR5E_MAX_REACH = 0.80
+
+MAX_ANCHO_M         = 0.09
+EPSILON_PX          = 0.7
+DECIMATE_STEP       = 1
+MIN_PUNTOS_CONTORNO = 5
+MIN_LONGITUD_PX     = 20
+MAX_PUNTOS_TOTAL    = 1000
+
+CANNY_FINO_LOW      = 30
+CANNY_FINO_HIGH     = 90
+CANNY_GRUESO_LOW    = 80
+CANNY_GRUESO_HIGH   = 160
+
+V_BAJA      = 0.008
+V_DIBUJO    = 0.002
+V_SUBIDA    = 0.010
+A_DIBUJO    = 0.008
+Z_SUBIDA    = 0.012
+Z_PAPEL     = 0.0025
+F_UMBRAL    = 1.0
+
+V_HOME      = 0.05
+A_HOME      = 0.05
+
+SYNC_TIMEOUT = 600
+SYNC_MSG = "LISTO"
