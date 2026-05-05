@@ -9,12 +9,13 @@ Flujo completo:
   2. Extrae trayectorias métricas centradas en el origen (centro del papel)
   3. Reparte trayectorias entre UR3e y UR5e (aleatorio + filtro de alcance)
   4. Genera los dos URScripts
-  5. Envía UR5e primero (levanta servidor socket) → luego UR3e
+  5. Envía UR3e primero; cuando acaba y avisa al PC, se envía UR5e
 
 Uso:
     python main.py imagen.jpg
     python main.py imagen.jpg --seed 42         # reparto reproducible
     python main.py imagen.jpg --dry-run         # solo genera scripts, no envía
+    python main.py imagen.jpg --base-origen ur3e # usa UR3e como referencia principal
     python main.py imagen.jpg --ip3 192.168.1.10 --ip5 192.168.1.11
 """
 
@@ -64,6 +65,8 @@ def parse_args():
                    help="Archivo de salida script UR5e.")
     p.add_argument("--debug-edges", default="debug_edges.png",
                    help="Imagen de bordes para depuración.")
+    p.add_argument("--base-origen", default="ur3e", choices=["ur3e", "ur5e"],
+                   help="Robot que se usa como referencia principal del origen común. Default: ur3e.")
     return p.parse_args()
 
 
@@ -81,7 +84,8 @@ def main():
     log.info(f"  F_DETECT   : {F_DETECT:.1f} N (umbral detección mesa)")
     log.info(f"  Semilla    : {args.seed}")
     log.info(f"  Dry-run    : {args.dry_run}")
-    log.info("  Sensor F/T : Habilitado (detección automática de mesa)")
+    log.info(f"  Base origen: {args.base_origen}")
+    log.info("  Sensor F/T : Habilitado (detección automática de mesa una sola vez)")
     log.info("=" * 60)
 
     # ------------------------------------------------------------------
@@ -122,8 +126,8 @@ def main():
     # 4. Generar URScripts
     # ------------------------------------------------------------------
     try:
-        script_ur3e = generar_script_ur3e(t_ur3e)
-        script_ur5e = generar_script_ur5e(t_ur5e)
+        script_ur3e = generar_script_ur3e(t_ur3e, base_origen=args.base_origen)
+        script_ur5e = generar_script_ur5e(t_ur5e, base_origen=args.base_origen)
     except ValueError as e:
         log.error(f"Error al generar scripts: {e}")
         sys.exit(1)

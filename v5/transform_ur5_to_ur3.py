@@ -2,92 +2,133 @@
 """
 transform_ur5_to_ur3.py
 =======================
-Conversión auxiliar de una pose TCP del UR5e a la pose TCP equivalente del UR3e.
+Módulo auxiliar de transformación entre referencias UR3e y UR5e.
 
-Idea:
-    Si el punto del UR5e está bien medido en el espacio compartido, este módulo
-    calcula dónde debería ir el UR3e para llegar al MISMO punto físico del papel.
+Ahora NO obliga a usar siempre el UR5e como referencia. Desde main.py puedes elegir:
+
+    --base-origen ur3e   -> el origen bueno/manual es el del UR3e y se calcula el UR5e
+    --base-origen ur5e   -> el origen bueno/manual es el del UR5e y se calcula el UR3e
+
+La idea es que el dibujo sigue estando expresado como puntos (x, y) alrededor de un
+origen común del papel, pero tú decides qué robot manda en la calibración.
 
 IMPORTANTE:
-    La conversión usa dos puntos de calibración que representan el mismo punto
-    físico visto desde cada base:
-
-        UR5E_REF_POSE  -> pose correcta del UR5e en el punto común
-        UR3E_REF_POSE  -> pose equivalente del UR3e en ese mismo punto común
-
-    Si el UR3e queda desplazado, NO cambies todo el programa: ajusta solamente
-    UR3E_REF_POSE o los signos AXIS_SIGN_X / AXIS_SIGN_Y.
+    UR3E_REF_POSE y UR5E_REF_POSE deben ser el MISMO punto físico del papel,
+    medido desde la base de cada robot.
 """
 
 from __future__ import annotations
-
-from typing import Iterable, List
+from typing import Iterable, List, Tuple
 
 # -----------------------------------------------------------------------------
 # PUNTO DE CALIBRACIÓN COMÚN
 # -----------------------------------------------------------------------------
-# Este punto del UR5e es el que tú dices que está correcto.
+# Mismo punto físico visto desde UR5e
 UR5E_REF_POSE = [0.68387, -0.03000, 0.00221, 2.481, -1.927, 0.0]
 
-# Este debe ser el MISMO punto físico, pero medido con el UR3e.
-# He dejado el valor que teníamos como origen bueno en pruebas anteriores.
+# Mismo punto físico visto desde UR3e
+# Ajusta esta pose si el UR3e no cae exactamente en el origen del papel.
 UR3E_REF_POSE = [-0.52777, -0.01601, 0.00821, 1.346, 2.839, 0.0]
 
 # -----------------------------------------------------------------------------
 # RELACIÓN ENTRE EJES
 # -----------------------------------------------------------------------------
 # Como los robots están enfrentados, normalmente X va invertido.
-# Si al mover +X en UR5e el UR3e también debe aumentar X, pon AXIS_SIGN_X = +1.
 AXIS_SIGN_X = -1.0
 AXIS_SIGN_Y = +1.0
 
-# En Z normalmente NO interesa copiar la Z exacta del UR5e, porque cada robot tiene
-# su propia altura/base/TCP. Por eso se mantiene la Z de referencia del UR3e.
+# En Z no copiamos normalmente el offset entre robots porque cada TCP/herramienta
+# tiene su propia altura. Para el dibujo, cada robot detecta la mesa por fuerza.
 COPY_Z_OFFSET = False
 
 
-def convertir_pose_ur5_a_ur3(pose_ur5: Iterable[float]) -> List[float]:
+def _validar_pose(pose: Iterable[float], nombre: str) -> List[float]:
+    p = [float(v) for v in pose]
+    if len(p) != 6:
+        raise ValueError(f"{nombre} debe tener 6 valores: [x, y, z, rx, ry, rz]")
+    return p
+
+
+def convertir_pose(pose: Iterable[float], desde: str, hacia: str) -> List[float]:
     """
-    Convierte una pose [x, y, z, rx, ry, rz] del UR5e a una pose equivalente del UR3e.
+    Convierte una pose TCP de un robot al otro usando el punto común calibrado.
 
     Parameters
     ----------
-    pose_ur5:
-        Pose TCP del UR5e en metros/radianes.
-
-    Returns
-    -------
-    list[float]
-        Pose TCP equivalente para el UR3e.
+    pose:
+        Pose [x, y, z, rx, ry, rz] en el robot de origen.
+    desde:
+        'ur3e' o 'ur5e'.
+    hacia:
+        'ur3e' o 'ur5e'.
     """
-    p5 = list(pose_ur5) # Aseguramos que es una lista para poder indexar. También convertimos a float si viene en otro formato.
-    if len(p5) != 6:    # La pose debe tener 6 valores: x, y, z, rx, ry, rz.
-        raise ValueError("La pose del UR5e debe tener 6 valores: [x, y, z, rx, ry, rz]")
+    desde = desde.lower().strip()
+    hacia = hacia.lower().strip()
+    if desde not in ("ur3e", "ur5e") or hacia not in ("ur3e", "ur5e"):
+        raise ValueError("desde/hacia deben ser 'ur3e' o 'ur5e'")
 
-    dx5 = p5[0] - UR5E_REF_POSE[0]  # Diferencia en X entre la pose dada y la pose de referencia del UR5e.
-    dy5 = p5[1] - UR5E_REF_POSE[1]  # Diferencia en Y entre la pose dada y la pose de referencia del UR5e.
-    dz5 = p5[2] - UR5E_REF_POSE[2]  # Diferencia en Z entre la pose dada y la pose de referencia del UR5e.
+    p = _validar_pose(pose, f"pose {desde}")
+    if desde == hacia:
+        return p
 
-    x3 = UR3E_REF_POSE[0] + AXIS_SIGN_X * dx5                          # Calculamos la X equivalente para el UR3e, aplicando el signo de inversión si es necesario. 
-    y3 = UR3E_REF_POSE[1] + AXIS_SIGN_Y * dy5                          # Calculamos la Y equivalente para el UR3e, aplicando el signo de inversión si es necesario.
-    z3 = UR3E_REF_POSE[2] + dz5 if COPY_Z_OFFSET else UR3E_REF_POSE[2] # Calculamos la Z equivalente para el UR3e.
-    # Si COPY_Z_OFFSET es False, simplemente usamos la Z de referencia del UR3e, ignorando la Z del UR5e.
+    if desde == "ur5e" and hacia == "ur3e":
+        ref_from = UR5E_REF_POSE
+        ref_to = UR3E_REF_POSE
+        sx, sy = AXIS_SIGN_X, AXIS_SIGN_Y
+    elif desde == "ur3e" and hacia == "ur5e":
+        ref_from = UR3E_REF_POSE
+        ref_to = UR5E_REF_POSE
+        # Inversa de la transformación. Como los signos son +/-1, la inversa es igual.
+        sx, sy = AXIS_SIGN_X, AXIS_SIGN_Y
 
-    # La orientación del UR3e se deja fija con la orientación calibrada del lápiz.
-    rx3, ry3, rz3 = UR3E_REF_POSE[3], UR3E_REF_POSE[4], UR3E_REF_POSE[5] 
+    dx = p[0] - ref_from[0]
+    dy = p[1] - ref_from[1]
+    dz = p[2] - ref_from[2]
 
-    return [x3, y3, z3, rx3, ry3, rz3]
+    x = ref_to[0] + sx * dx
+    y = ref_to[1] + sy * dy
+    z = ref_to[2] + dz if COPY_Z_OFFSET else ref_to[2]
+
+    # La orientación se toma de la referencia del robot destino.
+    rx, ry, rz = ref_to[3], ref_to[4], ref_to[5]
+    return [x, y, z, rx, ry, rz]
+
+
+def obtener_origenes(base_origen: str = "ur3e") -> Tuple[List[float], List[float]]:
+    """
+    Devuelve (origen_ur3e, origen_ur5e) según el robot elegido como base.
+
+    base_origen='ur3e': usa UR3E_REF_POSE como origen real y calcula UR5e.
+    base_origen='ur5e': usa UR5E_REF_POSE como origen real y calcula UR3e.
+    """
+    base = base_origen.lower().strip()
+    if base == "ur3e":
+        origen_ur3e = list(UR3E_REF_POSE)
+        origen_ur5e = convertir_pose(UR3E_REF_POSE, desde="ur3e", hacia="ur5e")
+    elif base == "ur5e":
+        origen_ur5e = list(UR5E_REF_POSE)
+        origen_ur3e = convertir_pose(UR5E_REF_POSE, desde="ur5e", hacia="ur3e")
+    else:
+        raise ValueError("base_origen debe ser 'ur3e' o 'ur5e'")
+    return origen_ur3e, origen_ur5e
+
+
+# Compatibilidad con versiones anteriores del proyecto.
+def convertir_pose_ur5_a_ur3(pose_ur5: Iterable[float]) -> List[float]:
+    return convertir_pose(pose_ur5, desde="ur5e", hacia="ur3e")
+
+
+def convertir_pose_ur3_a_ur5(pose_ur3: Iterable[float]) -> List[float]:
+    return convertir_pose(pose_ur3, desde="ur3e", hacia="ur5e")
 
 
 def formatear_pose(pose: Iterable[float]) -> str:
-    return "[" + ", ".join(f"{v:.5f}" for v in pose) + "]"  # Formatea la pose con 5 decimales para una visualización más clara.
+    return "[" + ", ".join(f"{float(v):.5f}" for v in pose) + "]"
 
 
 if __name__ == "__main__":
-    # Prueba rápida: al meter el punto correcto del UR5e, debe devolver el punto común del UR3e.
-    pose_ur5 = UR5E_REF_POSE
-    pose_ur3 = convertir_pose_ur5_a_ur3(pose_ur5)
-
-    print("POSE UR5e entrada :", formatear_pose(pose_ur5))
-    print("POSE UR3e calculada:", formatear_pose(pose_ur3))
-    print("\nCopia esta pose en el origen del UR3e si al probar ves que coincide físicamente.")
+    for base in ("ur3e", "ur5e"):
+        o3, o5 = obtener_origenes(base)
+        print(f"\nBASE: {base}")
+        print("ORIGEN UR3e:", formatear_pose(o3))
+        print("ORIGEN UR5e:", formatear_pose(o5))

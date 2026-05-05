@@ -57,14 +57,14 @@ CANNY_GRUESO_HIGH   = 160   # Umbral alto para bordes gruesos (menos sensibles, 
 # MOVIMIENTO / SEGURIDAD / FUERZA
 # =============================================================================
 V_BAJA      = 0.008         # Velocidad baja para movimientos delicados (por ejemplo, al acercarse al papel).
-V_DIBUJO    = 0.1           # Velocidad de dibujo. No es necesario que sea muy alta, y velocidades muy altas pueden causar vibraciones o pérdida de precisión.
-V_SUBIDA    = 0.1           # Velocidad para movimientos de subida/descenso (Z). Es mejor que sea más lenta para evitar golpes contra el papel.
+V_DIBUJO    = 0.025         # Velocidad de dibujo lenta y estable. Antes estaba en 0.1 y podía provocar tirones/protective stop.
+V_SUBIDA    = 0.04          # Velocidad para movimientos de subida/descenso (Z), reducida para evitar golpes contra el papel.
 A_DIBUJO    = 0.008         # Aceleración para movimientos de dibujo. Al igual que la velocidad, es mejor que sea baja para mejorar la precisión.
-Z_PAPEL     = 0.020         # Altura Z a la que el robot considera que está tocando el papel. Este valor puede necesitar ajustes según tu calibración y el grosor del lápiz.
-Z_SUBIDA    = 0.030         # Altura Z para movimientos de traslado (cuando el lápiz está levantado). Debe ser suficientemente alta para evitar colisiones con el papel o con las trayectorias dibujadas.
-F_UMBRAL    = 1.0           # Fuerza umbral para detectar la superficie del papel (N). Si el robot detecta una fuerza mayor a este valor al descender, considera que ha tocado la superficie.
+Z_PAPEL     = 0.0015        # Margen sobre la Z de contacto detectada. Evita clavar el lápiz. Si no pinta, baja a 0.0010; si aprieta, sube a 0.0020.
+Z_SUBIDA    = 0.025         # Altura de traslado sobre la Z de contacto. Suficiente para levantar el lápiz sin hacer movimientos bruscos.
+F_UMBRAL    = 2.0           # Fuerza umbral para detectar la superficie (N). Algo más alto para evitar falsos contactos por ruido del sensor.
 F_DETECT    = F_UMBRAL      # Alias de F_UMBRAL para compatibilidad con main.py.
 F_DIBUJO    = 3.0           # Fuerza de contacto durante el dibujo (N). El robot mantiene esta fuerza contra el papel usando force_mode. Ajustar si el lápiz presiona demasiado (bajar) o muy poco (subir).
 
 V_HOME      = 0.05          # Velocidad para movimientos a home/origen. Puede ser más rápida que la velocidad de dibujo, pero no demasiado para evitar golpes.
-A_HOME      = 0.05          # Aceleración para movimientos a home/origen. Al igual que la velocidad, puede ser más alta que la de dibujo, pero sin excederse para mantener la seguridad.    
+A_HOME      = 0.03          # Aceleración para movimientos a home/origen, suavizada para reducir tirones.    
