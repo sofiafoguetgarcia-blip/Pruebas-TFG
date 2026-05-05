@@ -28,14 +28,15 @@ UR5E_REF_POSE = [0.68387, -0.03000, 0.00221, 2.481, -1.927, 0.0]
 
 # Mismo punto físico visto desde UR3e
 # Ajusta esta pose si el UR3e no cae exactamente en el origen del papel.
-UR3E_REF_POSE = [-0.52777, -0.01601, 0.00821, 1.346, 2.839, 0.0]
+#UR3E_REF_POSE = [-0.50256, -0.06533, 0.03374, 2.325, 2.113, 0.0]
+UR3E_REF_POSE = [-0.47470, -0.11488, 0.10478, 0.997, 2.979, 0.0]
 
 # -----------------------------------------------------------------------------
 # RELACIÓN ENTRE EJES
 # -----------------------------------------------------------------------------
 # Como los robots están enfrentados, normalmente X va invertido.
-AXIS_SIGN_X = -1.0
-AXIS_SIGN_Y = +1.0
+AXIS_SIGN_X = 1.0
+AXIS_SIGN_Y = -1.0
 
 # En Z no copiamos normalmente el offset entre robots porque cada TCP/herramienta
 # tiene su propia altura. Para el dibujo, cada robot detecta la mesa por fuerza.
