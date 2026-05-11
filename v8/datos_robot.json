@@ -1,0 +1,101 @@
+{
+  "imagen": "DSC07665.jpg",
+  "pipeline": "clasico",
+  "total_piezas": 9,
+  "piezas": [
+    {
+      "numero": 1,
+      "robot_x": 97.74,
+      "robot_y": -327.53,
+      "ancho_mm": 141.1,
+      "alto_mm": 142.08,
+      "angulo_grados": 7.5
+    },
+    {
+      "numero": 2,
+      "robot_x": -115.89,
+      "robot_y": -268.53,
+      "ancho_mm": 150.94,
+      "alto_mm": 152.25,
+      "angulo_grados": -23.94
+    },
+    {
+      "numero": 3,
+      "robot_x": -303.82,
+      "robot_y": -369.85,
+      "ancho_mm": 115.5,
+      "alto_mm": 117.47,
+      "angulo_grados": 9.82
+    },
+    {
+      "numero": 4,
+      "robot_x": 166.52,
+      "robot_y": -475.8,
+      "ancho_mm": 113.86,
+      "alto_mm": 116.49,
+      "angulo_grados": 37.34
+    },
+    {
+      "numero": 5,
+      "robot_x": -153.06,
+      "robot_y": -477.04,
+      "ancho_mm": 112.55,
+      "alto_mm": 116.82,
+      "angulo_grados": 39.99
+    },
+    {
+      "numero": 6,
+      "robot_x": -10.99,
+      "robot_y": -566.61,
+      "ancho_mm": 150.94,
+      "alto_mm": 152.25,
+      "angulo_grados": 31.14
+    },
+    {
+      "numero": 7,
+      "robot_x": -283.33,
+      "robot_y": -570.01,
+      "ancho_mm": 109.27,
+      "alto_mm": 112.55,
+      "angulo_grados": -44.15
+    },
+    {
+      "numero": 8,
+      "robot_x": 141.51,
+      "robot_y": -676.89,
+      "ancho_mm": 111.24,
+      "alto_mm": 112.55,
+      "angulo_grados": 29.17
+    },
+    {
+      "numero": 9,
+      "robot_x": -161.05,
+      "robot_y": -712.1,
+      "ancho_mm": 152.91,
+      "alto_mm": 153.89,
+      "angulo_grados": 19.06
+    }
+  ],
+  "calibracion": {
+    "ref1_px": {
+      "x": 383.59,
+      "y": 493.78
+    },
+    "ref1_robot": {
+      "x": 263.93,
+      "y": -239.43
+    },
+    "ref2_px": {
+      "x": 2190.08,
+      "y": 2381.15
+    },
+    "ref2_robot": {
+      "x": -363.6,
+      "y": -822.42
+    },
+    "escala_x_mm_px": -0.347375,
+    "escala_y_mm_px": -0.30889,
+    "offset_x_mm": 397.18,
+    "offset_y_mm": -86.91
+  }
+}
