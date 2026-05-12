@@ -70,7 +70,7 @@ def parse_args():
 
     p.add_argument(
         "--pieza",
-        default=1,
+        default=0,
         type=int,
         help="Número de pieza a procesar. Usa 0 para procesar todas."
     )
