@@ -1,0 +1,152 @@
+def ur3e_dibujar_en_baldosa():
+  textmsg("=== UR3e: dibujo en baldosa ===")
+  q_home = p[0.31875, -0.05563, 0.07194, 2.97400, -1.01300, 0.00000]
+  x0 = 0.05730
+  y0 = 0.34812
+  z0 = -0.00126
+  rx = 2.84000
+  ry = 1.34400
+  rz = 0.00000
+
+  movej(q_home, a=0.03000, v=0.10000)
+  sleep(0.3)
+ movel(p[x0, y0, z0+0.08000, rx, ry, rz], a=0.03, v=0.1)
+  sleep(0.3)
+  textmsg("UR3e: detectando superficie una sola vez")
+  zero_ftsensor()
+  sleep(0.5)
+  i_f = 0
+  while (force() < 1.200 and i_f < 8000):
+    speedl([0, 0, -0.00600, 0, 0, 0], 0.2, 0.05)
+    i_f = i_f + 1
+  end
+  stopl(3.0)
+  sleep(0.2)
+  if (i_f >= 8000):
+    popup("UR3e: no se detecto superficie. Revisa posicion/Z/fuerza.", error=True)
+    halt
+  end
+  z_contacto = get_actual_tcp_pose()[2]
+  z_dibujo = z_contacto + 0.00080
+  textmsg("UR3e: z_contacto=", z_contacto)
+  textmsg("UR3e: z_dibujo=", z_dibujo)
+  movel(p[x0, y0, z_dibujo+0.02500, rx, ry, rz], a=0.03, v=0.010)
+  # === DIBUJO: 6 trazos ===
+
+  # Trazo 1/6
+  textmsg("UR3e: trazo 1 de 6")
+  movej(p[x0+-0.00236, y0+0.02813, z_dibujo+0.02500, rx, ry, rz], a=0.03, v=0.02)
+  movel(p[x0+-0.00236, y0+0.02813, z_dibujo, rx, ry, rz], a=0.004, v=0.01)
+  movel(p[x0+0.00177, y0+0.02842, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.00766, y0+0.02577, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.01060, y0+0.02194, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.01119, y0+0.01723, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.00589, y0+0.00869, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.00412, y0+0.00928, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00206, y0+0.00987, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00442, y0+0.00928, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00618, y0+0.00869, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.01090, y0+0.01546, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.01149, y0+0.01959, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00942, y0+0.02430, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00501, y0+0.02754, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00501, y0+0.02754, z_dibujo+0.02500, rx, ry, rz], a=0.03, v=0.02)
+
+  # Trazo 2/6
+  textmsg("UR3e: trazo 2 de 6")
+  movej(p[x0+0.01001, y0+-0.00663, z_dibujo+0.02500, rx, ry, rz], a=0.03, v=0.02)
+  movel(p[x0+0.01001, y0+-0.00663, z_dibujo, rx, ry, rz], a=0.004, v=0.01)
+  movel(p[x0+0.01178, y0+-0.00633, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.01649, y0+-0.00780, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.01973, y0+-0.00987, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.02209, y0+-0.01340, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.02268, y0+-0.01605, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.02032, y0+-0.02282, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.01590, y0+-0.02665, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.00884, y0+-0.02813, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.00236, y0+-0.02400, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.00088, y0+-0.01311, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.00412, y0+-0.01222, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.00913, y0+-0.00839, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.00913, y0+-0.00839, z_dibujo+0.02500, rx, ry, rz], a=0.03, v=0.02)
+
+  # Trazo 3/6
+  textmsg("UR3e: trazo 3 de 6")
+  movej(p[x0+0.01767, y0+0.01576, z_dibujo+0.02500, rx, ry, rz], a=0.03, v=0.02)
+  movel(p[x0+0.01767, y0+0.01576, z_dibujo, rx, ry, rz], a=0.004, v=0.01)
+  movel(p[x0+0.02032, y0+0.01576, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.02710, y0+0.01046, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.02886, y0+0.00604, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.02739, y0+-0.00221, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.02150, y0+-0.00633, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.01149, y0+-0.00427, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.01119, y0+0.00074, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.00942, y0+0.00515, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.00766, y0+0.00751, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.01355, y0+0.01458, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.01738, y0+0.01576, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.01738, y0+0.01576, z_dibujo+0.02500, rx, ry, rz], a=0.03, v=0.02)
+
+  # Trazo 4/6
+  textmsg("UR3e: trazo 4 de 6")
+  movej(p[x0+-0.02091, y0+0.01546, z_dibujo+0.02500, rx, ry, rz], a=0.03, v=0.02)
+  movel(p[x0+-0.02091, y0+0.01546, z_dibujo, rx, ry, rz], a=0.004, v=0.01)
+  movel(p[x0+-0.01649, y0+0.01576, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.01207, y0+0.01311, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00795, y0+0.00692, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.01119, y0+0.00191, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.01149, y0+0.00044, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.01826, y0+-0.00633, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.02503, y0+-0.00486, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.02916, y0+0.00191, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.02857, y0+0.00810, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.02415, y0+0.01399, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.02120, y0+0.01546, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.02120, y0+0.01546, z_dibujo+0.02500, rx, ry, rz], a=0.03, v=0.02)
+
+  # Trazo 5/6
+  textmsg("UR3e: trazo 5 de 6")
+  movej(p[x0+-0.01237, y0+-0.00663, z_dibujo+0.02500, rx, ry, rz], a=0.03, v=0.02)
+  movel(p[x0+-0.01237, y0+-0.00663, z_dibujo, rx, ry, rz], a=0.004, v=0.01)
+  movel(p[x0+-0.01060, y0+-0.00633, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00707, y0+-0.01075, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00147, y0+-0.01281, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00118, y0+-0.02076, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00530, y0+-0.02665, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.01178, y0+-0.02813, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.01414, y0+-0.02754, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.02120, y0+-0.02194, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.02268, y0+-0.01458, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.01797, y0+-0.00839, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.01797, y0+-0.00839, z_dibujo+0.02500, rx, ry, rz], a=0.03, v=0.02)
+
+  # Trazo 6/6
+  textmsg("UR3e: trazo 6 de 6")
+  movej(p[x0+-0.00177, y0+0.00780, z_dibujo+0.02500, rx, ry, rz], a=0.03, v=0.02)
+  movel(p[x0+-0.00177, y0+0.00780, z_dibujo, rx, ry, rz], a=0.004, v=0.01)
+  movel(p[x0+0.00118, y0+0.00810, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.00825, y0+0.00309, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.00913, y0+-0.00398, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+0.00442, y0+-0.00987, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00265, y0+-0.01075, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00825, y0+-0.00633, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00942, y0+-0.00250, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00942, y0+0.00074, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00471, y0+0.00692, z_dibujo, rx, ry, rz], a=0.004, v=0.01, r=0.001)
+  movel(p[x0+-0.00471, y0+0.00692, z_dibujo+0.02500, rx, ry, rz], a=0.03, v=0.02)
+  textmsg("UR3e: dibujo terminado. Volviendo a HOME")
+  movej(q_home, a=0.03, v=0.1)
+  # === Aviso al PC: UR3e ===
+  socket_ok = socket_open("192.168.56.2", 50002, "sync_ur3_ur5")
+  if (not socket_ok):
+    popup("UR3e: no pudo avisar al PC", error=True)
+    halt
+  else:
+    socket_send_string("LISTO", "sync_ur3_ur5")
+    sleep(0.2)
+    socket_close("sync_ur3_ur5")
+    textmsg("UR3e: LISTO enviado al PC")
+  end
+  textmsg("UR3e finalizado")
+end
+ur3e_dibujar_en_baldosa()

@@ -34,14 +34,14 @@ UR5E_HOME_POSE = [0.54216, -0.32723, 0.38191, 3.066, -0.685, 0.0]
 # Se usa SIEMPRE para coger/devolver piezas, independientemente del ángulo del JSON.
 UR5E_PICK_ORIENTATION = [2.79604, -1.43234, 0.00003]
 
-UR3E_HOME_POSE = [0.42863, -0.10136, 0.22627, 2.898, -1.214, 0.0]
+UR3E_HOME_POSE = [0.31875, -0.05563, 0.07194, 2.974, -1.013, 0.0]
 
 # Zona compartida vista desde cada robot.
-DROP_ZONE_UR5E = [0.01939, 0.44820, -0.41385, 0.107, -3.140, 0.0]
-DROP_ZONE_UR3E = [-0.06210, 0.40344, 0.14140, 2.341, 2.095, 0.0]
+DROP_ZONE_UR5E = [-0.04511, 0.51128, -0.0102, 1.9626, 2.482, 0.0]
+DROP_ZONE_UR3E = [0.0573, 0.34812, -0.00126, 2.84, 1.344, 0.0]
 
 # Punto alto para entrar/salir de la zona compartida.
-UR5E_DROP_APPROACH_POSE = [-0.06345, 0.45836, 0.36156, 2.966, 1.035, 0.0]
+UR5E_DROP_APPROACH_POSE = [-0.04511, 0.51128, 0.2987, 1.9626, 2.482, 0.0]
 
 # =============================================================================
 # ALTURAS / FUERZA
@@ -80,7 +80,7 @@ V_SUBIDA = 0.020
 A_DIBUJO = 0.004
 Z_PAPEL = 0.0008
 Z_SUBIDA = 0.025
-F_UMBRAL_UR3 = 2.0
+F_UMBRAL_UR3 = 1.2
 
 # =============================================================================
 # ESCALADO DEL DIBUJO
