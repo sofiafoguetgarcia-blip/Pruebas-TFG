@@ -1,0 +1,78 @@
+{
+  "imagen": "DSC07665.jpg",
+  "total_piezas": 9,
+  "piezas": [
+    {
+      "numero": 1,
+      "centro_x": 873,
+      "centro_y": 779,
+      "ancho": 448,
+      "alto": 455,
+      "angulo_grados": 0.0
+    },
+    {
+      "numero": 2,
+      "centro_x": 1547,
+      "centro_y": 653,
+      "ancho": 400,
+      "alto": 659,
+      "angulo_grados": -25.24
+    },
+    {
+      "numero": 3,
+      "centro_x": 1999,
+      "centro_y": 913,
+      "ancho": 363,
+      "alto": 400,
+      "angulo_grados": 10.15
+    },
+    {
+      "numero": 4,
+      "centro_x": 724,
+      "centro_y": 1306,
+      "ancho": 359,
+      "alto": 505,
+      "angulo_grados": 37.67
+    },
+    {
+      "numero": 5,
+      "centro_x": 1563,
+      "centro_y": 1288,
+      "ancho": 361,
+      "alto": 415,
+      "angulo_grados": 39.74
+    },
+    {
+      "numero": 6,
+      "centro_x": 1071,
+      "centro_y": 1568,
+      "ancho": 351,
+      "alto": 644,
+      "angulo_grados": 21.21
+    },
+    {
+      "numero": 7,
+      "centro_x": 1950,
+      "centro_y": 1553,
+      "ancho": 324,
+      "alto": 341,
+      "angulo_grados": -44.36
+    },
+    {
+      "numero": 8,
+      "centro_x": 735,
+      "centro_y": 1908,
+      "ancho": 341,
+      "alto": 349,
+      "angulo_grados": 29.22
+    },
+    {
+      "numero": 9,
+      "centro_x": 1532,
+      "centro_y": 2020,
+      "ancho": 445,
+      "alto": 588,
+      "angulo_grados": 0.0
+    }
+  ]
+}
