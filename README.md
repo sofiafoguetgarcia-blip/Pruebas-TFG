@@ -1,31 +1,36 @@
-# Pruebas de Movimiento, Visión Artificial y Coordinación en Robots UR3e y UR5e
+# Pruebas de Movimiento, Decoración Cerámica, Visión Artificial y Coordinación en Robots UR3e y UR5e
 
-## 1. Descripción general
+---
 
-Este repositorio recoge el conjunto de pruebas y desarrollos realizados durante el Trabajo de Final de Grado relacionados con un sistema colaborativo formado por dos robots colaborativos de Universal Robots (UR3e y UR5e) y una cámara fija de visión artificial.
+# 1. Descripción general
 
-El objetivo principal del sistema es detectar piezas cerámicas mediante visión artificial, generar trayectorias automáticamente a partir de imágenes y coordinar ambos robots para realizar tareas de manipulación y dibujo sobre las piezas detectadas.
+Este repositorio recoge el conjunto de pruebas, desarrollos y validaciones realizadas durante el Trabajo Fin de Grado relacionadas con una célula colaborativa formada por dos robots colaborativos de Universal Robots (UR3e y UR5e) junto con un sistema de visión artificial de apoyo.
 
-Las pruebas desarrolladas abarcan principalmente:
+El desarrollo se encuentra vinculado al contexto del proyecto internacional **CERAMIC+**, orientado al estudio de nuevas formas de adaptación tecnológica sobre determinados procesos tradicionales de decoración cerámica.
 
-* Detección de piezas mediante visión artificial
-* Extracción de trayectorias desde imágenes
-* Generación automática de movimientos robóticos
-* Coordinación entre robots colaborativos
-* Comunicación TCP/IP entre PC y robots
-* Transformación de coordenadas entre referencias
-* Detección de superficie mediante sensor de fuerza/par
-* Ajuste dinámico de velocidades y aceleraciones
-* Generación automática de código URScript
-* Simulación de manipulación mediante ventosa
+El objetivo principal del sistema consiste en coordinar distintos elementos de robótica colaborativa para manipular piezas cerámicas y ejecutar automáticamente procesos decorativos, incorporando además herramientas auxiliares capaces de aportar mayor flexibilidad al funcionamiento global desarrollado.
 
-El proyecto no busca implementar una solución industrial cerrada, sino validar y estudiar distintos enfoques de automatización colaborativa aplicados al entorno cerámico.
+Las pruebas realizadas abarcan principalmente:
+
+- Detección de piezas mediante visión artificial
+- Extracción automática de trayectorias desde imágenes
+- Adaptación dinámica de patrones decorativos
+- Coordinación entre robots colaborativos
+- Comunicación TCP/IP entre PC y robots
+- Transformación entre referencias espaciales
+- Detección automática de superficie mediante fuerza/par
+- Ajuste dinámico de velocidades y aceleraciones
+- Generación automática de código URScript
+- Integración lógica de manipulación mediante sistema de vacío
+- Gestión de zonas compartidas de trabajo
+
+El proyecto no busca implementar una solución industrial cerrada, sino validar distintos enfoques relacionados con automatización colaborativa aplicada al entorno cerámico.
 
 ---
 
 # 2. Organización del repositorio
 
-El repositorio está organizado en distintas versiones (`v1` hasta `v11`), donde cada una representa una evolución progresiva del sistema y de las pruebas realizadas durante el desarrollo del Trabajo de Final de Grado.
+El repositorio se organiza en distintas versiones evolutivas desarrolladas a lo largo del Trabajo Fin de Grado.
 
 ```text
 Pruebas-TFG/
@@ -42,30 +47,24 @@ Pruebas-TFG/
 ├── v10/
 ├── v11/
 ├── v12/
+├── v13/
 │
 └── README.md
 ```
 
-Cada versión incorpora mejoras relacionadas con:
+Cada versión incorpora mejoras progresivas relacionadas con:
 
-* Procesado de imagen
-* Extracción y simplificación de trayectorias
-* Coordinación entre robots
-* Generación automática de URScript
-* Comunicación TCP/IP
-* Gestión de referencias espaciales
-* Detección de superficie mediante fuerza
-* Escalado dinámico del dibujo
-* Simulación de manipulación mediante ventosa
+- Procesado de imagen
+- Simplificación de trayectorias
+- Coordinación entre robots
+- Comunicación TCP/IP
+- Adaptación dinámica del dibujo
+- Detección de superficie mediante fuerza
+- Gestión de referencias espaciales
+- Integración de manipulación mediante vacío
+- Generación automática de URScript
 
-Las últimas versiones (`v10` y `v11`) incorporan las funcionalidades más completas del sistema, incluyendo:
-
-* Detección automática de piezas cerámicas mediante visión artificial
-* Selección de la pieza de mayor tamaño
-* Adaptación automática del tamaño del dibujo a las dimensiones de la pieza detectada
-* Gestión de zonas compartidas entre robots
-* Simulación del proceso de recogida y colocación de piezas mediante ventosa en el UR5e
-* Coordinación secuencial entre UR5e (manipulación) y UR3e (dibujo)
+Las últimas versiones incorporan las funcionalidades más completas desarrolladas hasta el momento.
 
 ---
 
@@ -75,293 +74,267 @@ El sistema sigue una arquitectura modular desarrollada principalmente en Python 
 
 ## 3.1 Flujo principal
 
-1. Captura de imagen desde cámara fija
+1. Captura de imagen mediante cámara fija
 2. Procesado de imagen mediante OpenCV
-3. Detección de bordes y contornos
-4. Identificación de piezas cerámicas
-5. Selección automática de la pieza principal
-6. Escalado dinámico del dibujo
+3. Identificación automática de piezas
+4. Selección de pieza objetivo
+5. Conversión automática de coordenadas
+6. Adaptación dinámica del patrón decorativo
 7. Generación de trayectorias
-8. Conversión a coordenadas métricas
-9. Generación dinámica de URScript
-10. Envío de scripts al robot correspondiente
-11. Ejecución coordinada entre UR3e y UR5e
+8. Generación automática de URScript
+9. Ejecución coordinada entre robots
+10. Transferencia de pieza hacia zona compartida
+11. Decoración automática
+12. Retorno de pieza
 
 ---
 
 # 4. Módulos principales
 
-## 4.1 `main.py`
+## 4.1 main.py
 
-Es el punto de entrada principal del sistema y coordina todo el flujo de ejecución.
+Punto principal de ejecución del sistema.
 
 Funciones principales:
 
-* Procesado de imagen
-* Extracción de trayectorias
-* Generación de scripts
-* Sincronización entre robots
-* Gestión de configuraciones
-* Ejecución de pruebas
+- Procesado de imagen
+- Generación de trayectorias
+- Gestión del flujo global
+- Sincronización entre robots
+- Configuración del sistema
+- Coordinación de módulos
 
-También permite configurar:
+Configuraciones principales:
 
-* Robots activos
-* IPs y puertos
-* Tamaño máximo del dibujo
-* Escalado dinámico
-* Modo simulación (`dry-run`)
-* Robot de referencia
+- Robots activos
+- IPs y puertos
+- Robot base
+- Escalado automático
+- Límites geométricos
+- Parámetros globales
 
 ---
 
-## 4.2 `image_processing.py`
+## 4.2 image_processing.py
 
-Encargado del tratamiento de imagen mediante OpenCV.
+Tratamiento inicial de imagen mediante OpenCV.
 
 Incluye:
 
-* Conversión a escala de grises
-* Suavizado Gaussiano
-* Detección de bordes con Canny
-* Gradiente morfológico
-* Filtrado de ruido
-* Extracción de contornos
-
-El resultado final es una representación simplificada del dibujo o pieza detectada.
+- Escala de grises
+- Suavizado Gaussiano
+- Detección de bordes Canny
+- Filtrado de ruido
+- Extracción de contornos
+- Preparación de trayectorias
 
 ---
 
-## 4.3 `trajectory.py`
+## 4.3 trajectory.py
 
-Transforma los contornos obtenidos en trayectorias robóticas.
+Generación y simplificación de trayectorias robóticas.
 
 Funciones:
 
-* Simplificación de curvas (`approxPolyDP`)
-* Reducción de puntos (`DECIMATE_STEP`)
-* Filtrado de trayectorias pequeñas
-* Conversión píxel → metro
-* Centrado respecto al origen común
-
-También se implementaron límites de tamaño y escalado dinámico dependiendo del tamaño detectado de la pieza cerámica.
+- Simplificación geométrica
+- Reducción de puntos
+- Filtrado de trayectorias pequeñas
+- Conversión píxel → metro
+- Ajuste de coordenadas
 
 ---
 
-## 4.4 `vision_detection.py`
+## 4.4 vision.py
 
-Módulo encargado de detectar las piezas cerámicas dentro del espacio de trabajo.
+Módulo encargado de interpretar la información obtenida previamente mediante visión artificial.
 
 Funciones principales:
 
-* Detección de piezas por contornos
-* Cálculo de orientación
-* Cálculo de dimensiones
-* Selección automática de la pieza más grande
-* Obtención de posiciones para manipulación
+- Lectura del JSON generado
+- Selección de pieza objetivo
+- Conversión milímetros → metros
+- Validación de datos
+- Preparación de coordenadas para robótica
 
-La cámara utilizada es fija y proporciona una referencia global del sistema.
+El módulo no recalcula geometría ni modifica posiciones detectadas.
 
----
-
-## 4.5 `transform_ur5_to_ur3.py`
-
-Gestiona la transformación entre sistemas de referencia de ambos robots.
-
-Características:
-
-* Definición de un punto común compartido
-* Conversión de coordenadas entre bases
-* Independencia entre calibraciones
-* Gestión del cambio de robot base
-
-Permite que ambos robots interpreten una misma posición física desde referencias diferentes.
+Las coordenadas proporcionadas por visión se utilizan directamente durante las etapas posteriores del funcionamiento desarrollado.
 
 ---
 
-## 4.6 `urscript_generator_solucion.py`
+## 4.5 drawing_scale.py
+
+Módulo encargado de adaptar automáticamente el tamaño del patrón decorativo.
+
+Funciones principales:
+
+- Lectura dimensiones reales
+- Cálculo automático de escala
+- Adaptación proporcional del dibujo
+- Limitación automática de tamaños máximos
+- Mantenimiento de proporciones decorativas
+
+Permite mantener una escala adecuada independientemente del tamaño de baldosa detectado.
+
+---
+
+## 4.6 transform_ur5_to_ur3.py
+
+Gestión de referencias compartidas entre robots.
+
+Funciones:
+
+- Punto común de referencia
+- Conversión entre sistemas de coordenadas
+- Gestión de referencias independientes
+- Cambio de robot base
+
+Permite que ambos robots interpreten una misma posición física desde referencias distintas.
+
+---
+
+## 4.7 urscript_generator_solucion.py
 
 Generador dinámico de código URScript.
 
 Incluye:
 
-* Movimientos `movej`
-* Movimientos `movel`
-* Detección de contacto mediante fuerza
-* Alturas de seguridad
-* Altura de dibujo
-* Movimientos suaves y controlados
-* Gestión de aceleraciones y velocidades
-
-También incorpora:
-
-* Protección frente a movimientos bruscos
-* Gestión de aproximaciones seguras
-* Control de subida y bajada del útil
+- movej
+- movel
+- Alturas de seguridad
+- Control de velocidades
+- Control de aceleraciones
+- Detección de superficie mediante fuerza
+- Movimientos suaves
+- Aproximaciones seguras
 
 ---
 
-## 4.7 `robot_comm.py`
+## 4.8 robot_comm.py
 
-Gestiona la comunicación TCP/IP entre el ordenador y los robots.
+Gestión de comunicación entre robots y ordenador.
 
 Funciones:
 
-* Envío de scripts mediante sockets
-* Comunicación con puertos UR
-* Servidor TCP en el PC
-* Recepción de señales de sincronización
-* Ejecución secuencial entre robots
+- Comunicación TCP/IP
+- Envío de scripts
+- Recepción de señales
+- Coordinación entre robots
+- Gestión de sincronización
+- Ejecución secuencial
 
-Se utilizan principalmente:
+Puertos utilizados:
 
-* Puerto `30002` para envío de URScript
-* Puerto `50001` para sincronización robot-PC
-
----
-
-## 4.8 `config_solucion.py`
-
-Archivo central de configuración del sistema.
-
-Contiene:
-
-* Velocidades
-* Aceleraciones
-* Parámetros de imagen
-* Umbrales de fuerza
-* Límites geométricos
-* Configuración de red
-* Alturas de seguridad
-
-Permite ajustar rápidamente el comportamiento global del sistema.
+- 30002 → envío URScript
+- 50001 → sincronización UR5e
+- 50002 → sincronización UR3e
 
 ---
 
-# 5. Sistema de referencia y calibración
+## 4.9 config_solucion.py
 
-El sistema utiliza un punto físico compartido entre ambos robots como referencia común.
+Archivo principal de configuración.
 
-Aspectos importantes:
+Incluye:
 
-* Cada robot mantiene su propio sistema base
-* La coordenada Z se detecta individualmente
-* La superficie se localiza mediante fuerza/par
-* Se evita depender de una calibración rígida global
-
-Esto permite mejorar la robustez del sistema frente a pequeñas variaciones físicas.
+- Velocidades
+- Aceleraciones
+- Fuerzas límite
+- Parámetros de visión
+- Configuración red
+- Límites geométricos
+- Alturas de seguridad
 
 ---
 
-# 6. Coordinación entre robots
+# 5. Coordinación entre robots
 
-El sistema implementa una coordinación secuencial entre el UR5e y el UR3e para simular un proceso colaborativo de manipulación y dibujo sobre piezas cerámicas.
+El sistema implementa una coordinación secuencial entre UR5e y UR3e.
 
 Funcionamiento general:
 
-1. La cámara fija detecta las piezas cerámicas presentes en la zona de trabajo.
-2. Se identifica automáticamente la pieza de mayor tamaño.
-3. El UR5e simula la recogida de la pieza mediante una ventosa.
-4. El UR5e desplaza la pieza hacia la zona compartida de trabajo.
-5. El UR3e realiza el dibujo generado automáticamente a partir de la imagen.
-6. El tamaño del dibujo se ajusta dinámicamente al tamaño de la pieza detectada.
-7. Una vez finalizado el dibujo, el UR3e envía una señal de finalización.
-8. El UR5e continúa el flujo de trabajo correspondiente.
+1. La cámara identifica las piezas presentes.
+2. Se selecciona la pieza objetivo.
+3. El UR5e realiza la aproximación.
+4. Se ejecuta la recogida.
+5. El UR5e traslada la pieza.
+6. La pieza llega a la zona compartida.
+7. El UR3e adapta automáticamente el patrón decorativo.
+8. Se realiza el dibujo.
+9. El UR3e finaliza.
+10. El UR5e recupera la pieza.
+11. La pieza vuelve a su posición correspondiente.
 
-La sincronización entre robots se realiza mediante comunicación TCP/IP a través de un servidor ejecutado en el PC.
-
----
-
-# 7. Consideraciones importantes de movimiento
-
-Durante las pruebas realizadas se detectaron diversos factores críticos.
-
-## 7.1 Velocidades y aceleraciones
-
-Valores excesivos podían provocar:
-
-* Movimientos bruscos
-* Errores de validación
-* Paradas de protección
-
-Por ello se ajustaron velocidades reducidas para movimientos de precisión.
+La sincronización se realiza mediante TCP/IP y señales de coordinación gestionadas desde el ordenador principal.
 
 ---
 
-## 7.2 Número de puntos
+# 6. Consideraciones importantes
 
-Trayectorias demasiado densas producían:
+## Velocidades y aceleraciones
 
-* Sobrecarga del controlador
-* Frenadas constantes
-* Pérdida de fluidez
+Valores excesivos pueden provocar:
 
-Se implementaron técnicas de simplificación de curvas y reducción de puntos.
-
----
-
-## 7.3 Detección de superficie
-
-La detección de contacto mediante fuerza permitió:
-
-* Ajustar automáticamente la altura de trabajo
-* Reducir errores en el dibujo
-* Evitar presión excesiva sobre la pieza
+- Movimientos bruscos
+- Errores de validación
+- Paradas de protección
 
 ---
 
-## 7.4 Zona compartida
+## Número de puntos
 
-Ambos robots trabajan sobre una zona común accesible para los dos.
+Trayectorias excesivamente densas pueden producir:
+
+- Sobrecarga de controlador
+- Frenadas constantes
+- Menor fluidez
+
+---
+
+## Detección de superficie
+
+La detección mediante fuerza permite:
+
+- Ajustar automáticamente alturas
+- Reducir errores
+- Mejorar estabilidad
+
+---
+
+## Zona compartida
+
+Ambos robots trabajan sobre una misma zona accesible.
 
 Fue necesario:
 
-* Ajustar referencias espaciales
-* Evitar conflictos de movimiento
-* Gestionar esperas y sincronización
+- Ajustar referencias
+- Coordinar tiempos
+- Evitar conflictos
 
 ---
 
-# 8. Uso del sistema
+# 7. Limitaciones actuales
 
-Ejemplo de ejecución:
+Actualmente todavía existen aspectos futuros de mejora:
 
-```bash
-python main.py imagen.jpg
-```
-
-Opciones disponibles:
-
-```bash
---dry-run
---seed 42
---base-origen ur3e
---ip3 192.168.X.X
---ip5 192.168.X.X
-```
+- Optimización adicional de tiempos de ciclo
+- Validación sobre más patrones decorativos
+- Integración física definitiva del sistema de vacío
+- Ajustes adicionales sobre determinadas configuraciones dinámicas
+- Optimización futura de coordinación avanzada
 
 ---
 
-# 9. Limitaciones actuales
+# 8. Objetivo del repositorio
 
-Actualmente el sistema presenta algunas limitaciones:
+Este repositorio tiene como finalidad:
 
-* No existe planificación avanzada de colisiones
-* Dependencia parcial de calibración manual
-* Sensibilidad a parámetros dinámicos
-* Variaciones en la detección de fuerza
-* Necesidad de ajuste manual en determinadas pruebas
+- Validar estrategias de coordinación robótica
+- Evaluar automatización colaborativa
+- Analizar integración entre distintos bloques tecnológicos
+- Estudiar aplicaciones relacionadas con manipulación y decoración cerámica
+- Explorar nuevas posibilidades de adaptación tecnológica sobre procesos tradicionales
+
+El proyecto se encuentra orientado a validación técnica, investigación y desarrollo experimental dentro del ámbito académico.
 
 ---
-
-# 10. Objetivo del repositorio
-
-Este repositorio tiene como finalidad servir como plataforma experimental para:
-
-* Validar estrategias de coordinación robótica
-* Evaluar generación automática de trayectorias
-* Analizar comunicación PC-robot
-* Estudiar automatización colaborativa aplicada al sector cerámico
-* Integrar visión artificial y robótica colaborativa
-
-El proyecto está orientado a investigación, validación técnica y desarrollo experimental dentro del ámbito académico.
