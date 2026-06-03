@@ -2,16 +2,16 @@
 """
 drawing_scale.py
 ================
-Calcula el tamano del dibujo que hara el UR3e en funcion del tamano
+Calcula el tamaño del dibujo que hara el UR3e en funcion del tamaño
 real de la baldosa que le manda el JSON.
 
 La idea es sencilla: no todas las baldosas miden lo mismo, asi que
-el dibujo tiene que adaptarse a cada una. Se toma el lado mas corto
+el dibujo tiene que adaptarse a cada una. Se toma el lado más corto
 de la baldosa y se aplica un porcentaje (DRAWING_SCALE_ON_TILE) para
 que el dibujo no llegue justo al borde.
 
-Tambien hay unos limites minimo y maximo por seguridad: si por alguna
-razon el calculo da un valor raro, se ajusta dentro del rango seguro.
+Tambien hay unos limites mínimo y máximo por seguridad: si por alguna
+razón el calculo da un valor raro, se ajusta dentro del rango seguro.
 
 Uso tipico:
     from drawing_scale import calcular_ancho_dibujo_por_baldosa
