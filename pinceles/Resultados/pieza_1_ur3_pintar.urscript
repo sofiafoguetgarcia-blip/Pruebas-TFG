@@ -1,0 +1,192 @@
+def ur3e_pintar_baldosa():
+  textmsg("=== UR3e: pintar baldosa con pincel ===")
+  q_home = p[0.31875, -0.05563, 0.07194, 2.97400, -1.01300, 0.00000]
+
+  # Centro de la zona compartida tal como la ve el UR3e
+  x0 = 0.05730
+  y0 = 0.34812
+  z0 = -0.00126
+  rx = 2.84000
+  ry = 1.34400
+  rz = 0.00000
+
+  # Posicion aproximada sobre el cuenco de pintura
+  p_cuenco_aprox = p[-0.32525, -0.09942, 0.20597, 0.93000, 3.00100, 0.00000]
+
+  # Primero HOME
+  movej(q_home, a=0.03, v=0.8)
+  sleep(0.3)
+
+  # Pasamos por la zona compartida alta antes de ir al cuenco
+  movej(p[x0, y0, z0+0.05000, rx, ry, rz], a=0.2, v=0.2)
+  sleep(0.2)
+
+  # Desde una posicion segura vamos al cuenco
+  movej(p_cuenco_aprox, a=0.2, v=0.2)
+  sleep(0.2)
+  textmsg("UR3e: yendo al cuenco de pintura")
+  movej(p[-0.32525, -0.09942, 0.20597, 0.93000, 3.00100, 0.00000], a=0.2, v=0.2)
+  sleep(0.2)
+
+  textmsg("UR3e: buscando fondo del cuenco por fuerza")
+  zero_ftsensor()
+  sleep(0.5)
+  i_bowl = 0
+  while (force() < 2.0 and i_bowl < 20000):
+    speedl([0, 0, -0.00600, 0, 0, 0], 0.10, 0.015)
+    i_bowl = i_bowl + 1
+  end
+  stopl(1.0)
+  sleep(0.15)
+  if (i_bowl >= 20000):
+    popup("UR3e: no se detecto el fondo del cuenco.", error=True)
+    halt
+  end
+
+  z_cuenco_contacto = get_actual_tcp_pose()[2]
+  z_mojado = z_cuenco_contacto - 0.010
+  z_limpieza = z_cuenco_contacto + 0.020
+  z_salida_cuenco = z_cuenco_contacto + 0.050
+  textmsg("UR3e: contacto cuenco=", z_cuenco_contacto)
+
+  textmsg("UR3e: mojando pincel 1/1")
+  movel(p[-0.32525, -0.09942, z_mojado, 0.93000, 3.00100, 0.00000], a=0.2, v=0.2)
+  sleep(0.4)
+  movel(p[-0.32525, -0.09942, z_salida_cuenco, 0.93000, 3.00100, 0.00000], a=0.2, v=0.2)
+  sleep(0.15)
+
+  textmsg("UR3e: limpiando exceso de pintura")
+  movel(p[-0.32525, -0.09942, z_limpieza, 0.93000, 3.00100, 0.00000], a=0.2, v=0.2)
+  movel(p[-0.32525, -0.12442, z_limpieza, 0.93000, 3.00100, 0.00000], a=0.2, v=0.2)
+  movel(p[-0.32525, -0.07442, z_limpieza, 0.93000, 3.00100, 0.00000], a=0.2, v=0.2)
+  movel(p[-0.32525, -0.12442, z_limpieza, 0.93000, 3.00100, 0.00000], a=0.2, v=0.2)
+  movel(p[-0.32525, -0.07442, z_limpieza, 0.93000, 3.00100, 0.00000], a=0.2, v=0.2)
+  movel(p[-0.32525, -0.12442, z_limpieza, 0.93000, 3.00100, 0.00000], a=0.2, v=0.2)
+  movel(p[-0.32525, -0.07442, z_limpieza, 0.93000, 3.00100, 0.00000], a=0.2, v=0.2)
+  movel(p[-0.32525, -0.12442, z_limpieza, 0.93000, 3.00100, 0.00000], a=0.2, v=0.2)
+
+  movel(p[-0.32525, -0.09942, z_salida_cuenco, 0.93000, 3.00100, 0.00000], a=0.2, v=0.2)
+  movej(p[-0.32525, -0.09942, 0.20597, 0.93000, 3.00100, 0.00000], a=0.2, v=0.2)
+  sleep(0.2)
+
+  textmsg("UR3e: volviendo a la zona compartida en alto")
+  movej(p[x0, y0, z0+0.05000, rx, ry, rz], a=0.2, v=0.2)
+  sleep(0.2)
+
+  # Ir al primer punto real de pintura en alto
+  movej(p[x0+-0.05785, y0+-0.05833, z0+0.05000, rx, ry, rz], a=0.2, v=0.2)
+  sleep(0.2)
+  textmsg("UR3e: detectando superficie de la baldosa para pintar")
+  zero_ftsensor()
+  sleep(0.5)
+  i_f = 0
+  while (force() < 1.200 and i_f < 10000):
+    speedl([0, 0, -0.00600, 0, 0, 0], 0.15, 0.02)
+    i_f = i_f + 1
+  end
+  stopl(1.0)
+  sleep(0.2)
+  if (i_f >= 10000):
+    popup("UR3e: no se detecto la superficie de la baldosa.", error=True)
+    halt
+  end
+  z_contacto = get_actual_tcp_pose()[2]
+  z_pintura = z_contacto + 0.00100
+  textmsg("UR3e: z_contacto=", z_contacto)
+  textmsg("UR3e: z_pintura=", z_pintura)
+
+  # Pintura completa de la baldosa: 11 pasadas suaves
+
+  # Pasada 1 de 11
+  textmsg("UR3e: pasada de pintura 1/11")
+  movej(p[x0+-0.05785, y0+-0.05833, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+  movel(p[x0+-0.05785, y0+-0.05833, z_pintura, rx, ry, rz], a=0.02, v=0.018)
+  movel(p[x0+0.05785, y0+-0.05833, z_pintura, rx, ry, rz], a=0.02, v=0.018, r=0.001)
+  movel(p[x0+0.05785, y0+-0.05833, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+
+  # Pasada 2 de 11
+  textmsg("UR3e: pasada de pintura 2/11")
+  movej(p[x0+0.05785, y0+-0.04667, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+  movel(p[x0+0.05785, y0+-0.04667, z_pintura, rx, ry, rz], a=0.02, v=0.018)
+  movel(p[x0+-0.05785, y0+-0.04667, z_pintura, rx, ry, rz], a=0.02, v=0.018, r=0.001)
+  movel(p[x0+-0.05785, y0+-0.04667, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+
+  # Pasada 3 de 11
+  textmsg("UR3e: pasada de pintura 3/11")
+  movej(p[x0+-0.05785, y0+-0.03500, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+  movel(p[x0+-0.05785, y0+-0.03500, z_pintura, rx, ry, rz], a=0.02, v=0.018)
+  movel(p[x0+0.05785, y0+-0.03500, z_pintura, rx, ry, rz], a=0.02, v=0.018, r=0.001)
+  movel(p[x0+0.05785, y0+-0.03500, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+
+  # Pasada 4 de 11
+  textmsg("UR3e: pasada de pintura 4/11")
+  movej(p[x0+0.05785, y0+-0.02333, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+  movel(p[x0+0.05785, y0+-0.02333, z_pintura, rx, ry, rz], a=0.02, v=0.018)
+  movel(p[x0+-0.05785, y0+-0.02333, z_pintura, rx, ry, rz], a=0.02, v=0.018, r=0.001)
+  movel(p[x0+-0.05785, y0+-0.02333, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+
+  # Pasada 5 de 11
+  textmsg("UR3e: pasada de pintura 5/11")
+  movej(p[x0+-0.05785, y0+-0.01167, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+  movel(p[x0+-0.05785, y0+-0.01167, z_pintura, rx, ry, rz], a=0.02, v=0.018)
+  movel(p[x0+0.05785, y0+-0.01167, z_pintura, rx, ry, rz], a=0.02, v=0.018, r=0.001)
+  movel(p[x0+0.05785, y0+-0.01167, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+
+  # Pasada 6 de 11
+  textmsg("UR3e: pasada de pintura 6/11")
+  movej(p[x0+0.05785, y0+0.00000, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+  movel(p[x0+0.05785, y0+0.00000, z_pintura, rx, ry, rz], a=0.02, v=0.018)
+  movel(p[x0+-0.05785, y0+0.00000, z_pintura, rx, ry, rz], a=0.02, v=0.018, r=0.001)
+  movel(p[x0+-0.05785, y0+0.00000, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+
+  # Pasada 7 de 11
+  textmsg("UR3e: pasada de pintura 7/11")
+  movej(p[x0+-0.05785, y0+0.01167, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+  movel(p[x0+-0.05785, y0+0.01167, z_pintura, rx, ry, rz], a=0.02, v=0.018)
+  movel(p[x0+0.05785, y0+0.01167, z_pintura, rx, ry, rz], a=0.02, v=0.018, r=0.001)
+  movel(p[x0+0.05785, y0+0.01167, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+
+  # Pasada 8 de 11
+  textmsg("UR3e: pasada de pintura 8/11")
+  movej(p[x0+0.05785, y0+0.02333, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+  movel(p[x0+0.05785, y0+0.02333, z_pintura, rx, ry, rz], a=0.02, v=0.018)
+  movel(p[x0+-0.05785, y0+0.02333, z_pintura, rx, ry, rz], a=0.02, v=0.018, r=0.001)
+  movel(p[x0+-0.05785, y0+0.02333, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+
+  # Pasada 9 de 11
+  textmsg("UR3e: pasada de pintura 9/11")
+  movej(p[x0+-0.05785, y0+0.03500, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+  movel(p[x0+-0.05785, y0+0.03500, z_pintura, rx, ry, rz], a=0.02, v=0.018)
+  movel(p[x0+0.05785, y0+0.03500, z_pintura, rx, ry, rz], a=0.02, v=0.018, r=0.001)
+  movel(p[x0+0.05785, y0+0.03500, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+
+  # Pasada 10 de 11
+  textmsg("UR3e: pasada de pintura 10/11")
+  movej(p[x0+0.05785, y0+0.04667, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+  movel(p[x0+0.05785, y0+0.04667, z_pintura, rx, ry, rz], a=0.02, v=0.018)
+  movel(p[x0+-0.05785, y0+0.04667, z_pintura, rx, ry, rz], a=0.02, v=0.018, r=0.001)
+  movel(p[x0+-0.05785, y0+0.04667, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+
+  # Pasada 11 de 11
+  textmsg("UR3e: pasada de pintura 11/11")
+  movej(p[x0+-0.05785, y0+0.05833, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+  movel(p[x0+-0.05785, y0+0.05833, z_pintura, rx, ry, rz], a=0.02, v=0.018)
+  movel(p[x0+0.05785, y0+0.05833, z_pintura, rx, ry, rz], a=0.02, v=0.018, r=0.001)
+  movel(p[x0+0.05785, y0+0.05833, z_pintura+0.05000, rx, ry, rz], a=0.2, v=0.2)
+
+  textmsg("UR3e: pintura terminada. Volviendo a HOME")
+  movej(q_home, a=0.03, v=0.8)
+  # Avisamos al PC de que esta fase ha terminado: UR3e
+  socket_ok = socket_open("192.168.56.2", 50002, "sync_ur3_ur5")
+  if (not socket_ok):
+    popup("UR3e: no pudo avisar al PC", error=True)
+    halt
+  else:
+    socket_send_string("LISTO", "sync_ur3_ur5")
+    sleep(0.2)
+    socket_close("sync_ur3_ur5")
+    textmsg("UR3e: LISTO enviado al PC")
+  end
+  textmsg("UR3e finalizado")
+end
+ur3e_pintar_baldosa()
